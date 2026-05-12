@@ -1,0 +1,74 @@
+PROYECTO: Medición de velocidad con DJI Tello, AprilTag y OpenCV
+Asignatura: ELE4001 - Robótica
+
+1) Requisitos previos
+- Python 3.10 o superior recomendado.
+- Cámara web para pruebas o dron DJI Tello para ejecución real.
+- AprilTag impreso de tamaño conocido, por ejemplo 16 cm por lado.
+- Objeto de color fuerte para seguimiento: rojo, verde, azul, naranja o amarillo.
+
+2) Instalación
+Abrir terminal dentro de la carpeta del proyecto y ejecutar:
+
+Windows PowerShell:
+python -m venv venv
+.\venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
+
+Linux/macOS:
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+
+3) Prueba con webcam, sin dron
+Ubicar el AprilTag frente a la cámara y mover un objeto de color rojo:
+
+python main.py --source webcam --tag-size-cm 16 --object-color red --log
+
+Si el objeto es azul, verde, naranja o amarillo, cambiar --object-color:
+python main.py --source webcam --tag-size-cm 16 --object-color blue --log
+
+4) Prueba con archivo de video
+python main.py --source video --video ruta/video.mp4 --tag-size-cm 16 --object-color red --log
+
+5) Ejecución con DJI Tello, sin despegar
+- Encender el Tello.
+- Conectar el computador a la red WiFi del Tello.
+- Ejecutar:
+
+python main.py --source tello --tag-size-cm 16 --object-color red --log
+
+6) Ejecución con DJI Tello y despegue
+Esta opción pide confirmación. Solo usar en zona segura de laboratorio.
+
+python main.py --source tello --takeoff --tag-size-cm 16 --object-color red --log
+
+Cuando el programa pregunte, escribir exactamente:
+ARMAR
+
+7) Controles de teclado
+ESC : salir del sistema
+L   : aterrizaje seguro
+X   : emergencia del Tello
+T   : reiniciar medición de velocidad
+W/S : avanzar / retroceder
+A/D : lateral izquierda / lateral derecha
+R/F : subir / bajar
+Q/E : giro yaw izquierda / derecha
+
+8) Funcionamiento general
+- El AprilTag se usa como referencia fija de escala.
+- El programa calcula cm/pixel a partir del tamaño físico del AprilTag.
+- El objeto se detecta mediante color en espacio HSV.
+- La velocidad instantánea se calcula entre muestras consecutivas.
+- La velocidad promedio se calcula con la distancia acumulada y el tiempo total.
+- Si se pierde el AprilTag o el objeto, la medición se congela por seguridad.
+
+9) Recomendaciones para laboratorio
+- Imprimir el AprilTag en buena calidad y medir su lado real en centímetros.
+- Mantener buena iluminación.
+- Usar un objeto de color muy diferente al fondo.
+- Evitar movimientos bruscos del dron.
+- Primero probar con webcam antes de usar el Tello.
