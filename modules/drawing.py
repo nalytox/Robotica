@@ -5,6 +5,9 @@ import cv2
 
 def draw_panel(frame, lines, origin=(20, 95), line_height=24):
     x, y = origin
+
+    y = frame.shape[0] - 6* line_height
+    print (y)
     max_width = 0
     for line in lines:
         (w, _), _ = cv2.getTextSize(line, cv2.FONT_HERSHEY_SIMPLEX, 0.58, 2)

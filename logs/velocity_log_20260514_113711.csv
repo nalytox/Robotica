@@ -1,0 +1,2 @@
+timestamp_s,tag_detected,object_detected,cm_per_px,object_x_px,object_y_px,instant_cm_s,average_cm_s,distance_total_cm,valid,reason
+1778773032.199874,False,True,0.00000000,333,230,0.000000,0.000000,0.000000,False,Sin AprilTag: medicion congelada

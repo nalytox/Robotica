@@ -145,10 +145,12 @@ def main():
     log_file, log_writer = create_log_writer(args.log)
 
     print("Iniciando fuente de video...")
-    source_controller.start()
+    flying = source_controller.start()
     print("Sistema iniciado. Presiona ESC para salir.")
 
     try:
+        if flying==True:
+            tiempo_inicial = time.time()
         while not stop_requested:
             frame = source_controller.read_frame_bgr()
             cv2.imwrite(f"images/frame_{frame_count}.png", frame)
@@ -173,13 +175,16 @@ def main():
             cm_per_px = tag.cm_per_px if tag else 0.0
             obj_x = obj.center[0] if obj else -1
             obj_y = obj.center[1] if obj else -1
-
+            if flying==False:
+                tiempo_vuelo = 0
+            elif flying==True:
+                tiempo_vuelo = int(time.time()-tiempo_inicial)
             panel_lines = [
                 f"Vel. inst.: {speed_result.instant_cm_s:.2f} cm/s  ({speed_result.instant_cm_s / 100:.3f} m/s)",
                 f"Vel. prom.: {speed_result.average_cm_s:.2f} cm/s  ({speed_result.average_cm_s / 100:.3f} m/s)",
                 f"Distancia acumulada: {speed_result.distance_total_cm:.2f} cm | Muestras: {speed_result.samples}",
                 f"Estado medicion: {'VALIDA' if speed_result.valid else 'CONGELADA'} | {speed_result.reason}",
-                source_controller.status_text(),
+                source_controller.status_text(time_flight=tiempo_vuelo),
             ]
             draw_panel(frame, panel_lines)
             draw_keyboard_help(frame)

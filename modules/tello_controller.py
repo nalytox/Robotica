@@ -44,7 +44,8 @@ class TelloController:
                 time.sleep(2)
             else:
                 print("Despegue cancelado. El sistema funcionará solo con video.")
-
+        return self.flying
+    
     def read_frame_bgr(self):
         if self.frame_read is None:
             return None
@@ -117,8 +118,8 @@ class TelloController:
         except Exception:
             return None
 
-    def status_text(self) -> str:
+    def status_text(self, time_flight) -> str:
         battery = self.safe_get_battery()
         height = self.safe_get_height()
-        flight_time = self.safe_get_flight_time()
+        flight_time = time_flight
         return f"Bateria:{battery if battery is not None else 'N/A'}% | Altura:{height if height is not None else 'N/A'}cm | Vuelo:{flight_time if flight_time is not None else 'N/A'}s"
